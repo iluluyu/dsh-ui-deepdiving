@@ -1,8 +1,8 @@
 # dsh-ui-deepdiving
 
-Continuous water-flow light for the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) web "Deep diving…" turn status.
+Curated effects and wording for the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (dsh) web "Deep diving…" turn status — six pure-CSS flowing-light presets (water flow, stock sweep, breath, rainbow, pulse, aurora), custom status wording, and a speed that follows the generation itself.
 
-为 dsh web 端的 "Deep diving…" 运行状态条提供连续流动的水流光影。
+为 dsh web 端的 "Deep diving…" 运行状态条提供动效与文字定制——六种纯 CSS 流光预设（水流、原版扫光、呼吸辉光、虹彩流转、电波掠过、极光缓摆）、自定义状态文字，以及跟随生成速度的流动节奏。
 
 ---
 
@@ -21,6 +21,23 @@ Close-up — the water-flow on "Deep diving…", one complete 6s cycle compresse
 ![water-flow close-up](docs/img/demo.png)
 
 Since 0.0.1 the card rides the official plugin-settings path (dsh `0.1.0-rc.7`, [cookbook](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/cookbook/adding-a-settings-card.md)): the host half registers the `deepdiving` settings namespace, the browser half claims its keyed slot, and the tab pairs the two halves automatically. Animation verified live on dsh `0.1.0-rc.6` (stock hashed class `Md3f7G_turnStatus`, GLM turn running): the plugin's animation, layers, and dark-theme brightening all resolve on the real element. 动画已在 dsh `0.1.0-rc.6` 真实会话中验证（原版哈希类名、GLM 思考中）：动画、分层、暗色提亮均在真实元素上生效。
+
+## Effects 动效
+
+Six pure-CSS presets, switched live from the settings card (no reload):
+
+| Effect | Visual | Knob |
+|:---|:---|:---|
+| **Water flow 水流** (default) | three parallax currents over a color river bed | — |
+| **Stock sweep 原版扫光** | the official single-band sweep, kept as a fallback | — |
+| **Breathing glow 呼吸辉光** | the whole row breathes in place | depth 呼吸深度 |
+| **Rainbow shimmer 虹彩流转** | the water currents plus an alternating hue swing | span 色相跨度 |
+| **Pulse sweep 电波掠过** | one narrow bright beam with a wide halo sweeping by | halo 光晕宽度 |
+| **Aurora sway 极光缓摆** | a broad diagonal curtain swinging slowly | sway 摆动幅度 |
+
+Shared knobs: **intensity 强度** (30–100%, pulls the two lightest highlight stops toward transparency — the bed stays opaque and the text readable) and **glow 流动辉光** (the soft aura behind the glyphs). Each effect declares a duration floor honored in both speed modes, so follow mode can never jitter aurora or over-drive breath.
+
+Adding an effect is one registry entry: the stylesheet is generated once from the `EFFECTS` table (lib/client.js), the picker flips `body[data-dv-effect]`, and per-effect knobs project as `--dv-*` custom properties — no CSS re-injection at runtime.
 
 ## Install
 
@@ -48,6 +65,7 @@ Pure CSS: zero JS per frame, zero layout. Measured via CDP `Performance.getMetri
 - Selector `[role="status"][class$="_turnStatus"]` beats the CSS-module hashed class (e.g. `Md3f7G_turnStatus`) in specificity and tolerates hash changes between builds.
 - Colors resolve from the host's `--dsw-static-deepseek-*` tokens with official fallbacks; `body[data-ds-dark-theme]` (the ThemePresenter signal) brightens the river bed for dark surfaces.
 - `prefers-reduced-motion` → static, still-colorful gradient.
+- **Custom wording** rides the DOM: a `data-dv-text` attribute becomes `::before { content: attr(data-dv-text) }` while the stock text node collapses to `font-size: 0`. React diffs only its own vdom and never reclaims attributes it does not manage, so the wording survives the per-second elapsed-tick re-renders; a 1s watchdog re-pins it after per-turn remounts; the gradient clipping and the glow shadow inherit onto the pseudo-element, so every effect animates the custom wording identically.
 
 纯 CSS 实现，直接叠在官方已设置的 `background-clip: text` 上；每层渐变均为周期函数且每循环位移整数个 tile，无缝循环；选择器特异性高于 CSS module 哈希类且容忍构建哈希变化；颜色实时读取宿主官方 token；暗色主题与减少动态效果均已适配。
 
@@ -55,30 +73,37 @@ Pure CSS: zero JS per frame, zero layout. Measured via CDP `Performance.getMetri
 
 `prefers-reduced-motion: reduce` (Windows: Settings → Accessibility → Visual effects → Animation effects off; macOS: Reduce motion) would hold the currents still — the same guard the stock dsh shimmer has. Since most reduced-motion users still want this gentle effect, **force-flow is ON by default**: the flow animates regardless, and anyone who needs true stillness (e.g. vestibular sensitivity) flips it off once in
 
-**Settings → Plugins → Plugin configuration → Deep diving water flow**
+**Settings → Plugins → Plugin configuration → Deep diving**
 
 | Light | Dark |
 |:---:|:---:|
 | ![light](docs/img/settings-card-light.png) | ![dark](docs/img/settings-card.png) |
 
-The card follows the official plugin-card chrome (same tokens, fold-out layout, bilingual zh/en copy tracking the app locale) and holds two fields:
+The card follows the official plugin-card chrome (same tokens, fold-out layout, bilingual zh/en copy tracking the app locale) and holds:
 
+- **Effect 动效** — the preset picker (official Menu dropdown); defaults to water flow.
 - **Flow speed 流动速度** — `Constant` or `Follow generation speed` (official Menu dropdown, theme-aware). Defaults to **follow**: the water breathes with the turn itself.
 - **Speed 速度倍速** — a segmented scale of official Pill chips (3× · 2.5× · 2× · 1.5× · 1× · 0.5×, edge to edge across the field), shown in constant mode only — in follow mode the pace belongs to the token stream. **1× is the official shimmer cadence**; 3× triples it (1.3s), 0.5× halves it (8s). Defaults to 1×.
+- **Intensity 强度** — 30% / 50% / 80% / 100% pills, applied live to the highlight layers.
+- **Glowing aura 流动辉光** — the text-shadow halo switch, default ON.
+- **Status text 状态文字** — custom wording for the status line; empty keeps the official locale text ("Deep diving..." / "深度求索中..."). Input commits debounced (300ms); applied per turn via a `data-dv-text` attribute React never reclaims (see Design).
+- **Per-effect knobs 效果微调** — the selected effect's own segmented scale (depth / span / halo / sway); unselected effects keep their saved values.
 - In follow mode a MutationObserver over the conversation flow maps the streamed character pace onto `--dv-dur`. Calibrated to measured throughputs: **~50 tok/s (the typical API turn — Zhipu GLM, DeepSeek) lands exactly on the official cadence at 1×**; faster providers climb a log curve to a rapids ceiling at ~250 tok/s (Cerebras-class serving); still water is 12s. 
 - **Flow under reduced motion** — the force-flow toggle, default ON; applies live (no reload).
 
-Preferences persist in the host's settings document (`settings.yaml`) through the official plugin-settings mechanism — the host half registers the `deepdiving` namespace (schemastery schema), and every card write is a revision-fenced `settings.mutate` over the wire, so they follow the user across browsers and machines. The card shows a `Customized 已自定义` badge once any field overrides the defaults, with a `Reset to defaults 恢复默认` action; pre-0.4 localStorage values migrate automatically on first load. (rc.6 and earlier: the api-proxy allowlist kept third-party namespaces off the wire, so those versions stay on localStorage — the readers remain as a fallback.)
+Preferences persist in the host's settings document (`settings.yaml`) through the official plugin-settings mechanism — the host half registers the `deepdiving` namespace (schemastery schema), and every card write is a revision-fenced `settings.mutate` over the wire, so they follow the user across browsers and machines. A `Reset to defaults 恢复默认` action appears whenever the user layer holds any key; pre-0.4 localStorage values migrate automatically on first load. (rc.6 and earlier: the api-proxy allowlist kept third-party namespaces off the wire, so those versions stay on localStorage — the readers remain as a fallback.)
 
 ### Tunables
 
 | Variable | Default | Meaning |
 |:---|:---|:---|
-| `--dv-dur` | `6s` | loop length |
-| `--dv-glow` | `0 0 16px rgb(103 158 254 / 0.25)` | aura behind glyphs; `none` to disable |
+| `--dv-dur` | `4s` | loop length (1× cadence; follow mode projects 12s→2s, clamped per effect) |
+| `--dv-int` | `1` | highlight intensity (0.3–1); color-mixes the two lightest stops toward transparency |
+| `--dv-glow` | `0 0 12px rgb(103 158 254 / 0.25)` | aura behind glyphs; `none` to disable |
+| `--dv-depth` / `--dv-span` / `--dv-trail` / `--dv-swing` | `0.35` / `90deg` / `15%` / `-30%` | breath depth · rainbow hue span · ecg halo · aurora sway |
 
 ```css
-:root { --dv-dur: 4s; --dv-glow: none; }  /* faster, no aura */
+:root { --dv-dur: 2s; --dv-glow: none; }  /* faster, no aura */
 ```
 
 ## Demo

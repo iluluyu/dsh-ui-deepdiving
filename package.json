@@ -1,7 +1,7 @@
 {
 	"name": "dsh-ui-deepdiving",
 	"version": "0.0.2",
-	"description": "Continuous water-flow light for the dsh web 'Deep diving...' turn status: three parallax gradient currents sweep the text like flowing water, replacing the stock single-band shimmer. Light/dark themes and reduced-motion respected.",
+	"description": "Curated effects and wording for the dsh web 'Deep diving…' turn status: six pure-CSS flowing-light presets (water flow default, stock sweep, breath, rainbow, pulse, aurora) with per-effect knobs, custom status wording, speed that follows generation, light/dark themes and reduced-motion respected.",
 	"type": "module",
 	"main": "lib/index.js",
 	"exports": {
@@ -44,6 +44,7 @@
 		"deep-diving",
 		"deepdiving",
 		"animation",
+		"effects",
 		"water-flow",
 		"shimmer"
 	],
