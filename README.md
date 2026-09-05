@@ -32,7 +32,7 @@ Six pure-CSS presets, switched live from the settings card (no reload):
 | **Stock sweep 原版扫光** | the official single-band sweep, kept as a fallback | — |
 | **Breathing glow 呼吸辉光** | the whole row breathes in place | depth 呼吸深度 |
 | **Rainbow shimmer 虹彩流转** | the water currents plus an alternating hue swing | span 色相跨度 |
-| **Pulse sweep 电波掠过** | one narrow bright beam with a wide halo sweeping by | halo 光晕宽度 |
+| **Pulse sweep 脉冲掠过** | one narrow bright beam with a wide halo sweeping by | halo 光晕宽度 |
 | **Aurora sway 极光缓摆** | a broad diagonal curtain swinging slowly | sway 摆动幅度 |
 
 Shared knobs: **intensity 强度** (30–100%, pulls the two lightest highlight stops toward transparency — the bed stays opaque and the text readable) and **glow 流动辉光** (the soft aura behind the glyphs). Each effect declares a duration floor honored in both speed modes, so follow mode can never jitter aurora or over-drive breath.
@@ -83,10 +83,10 @@ The card follows the official plugin-card chrome (same tokens, fold-out layout, 
 
 - **Effect 动效** — the preset picker (official Menu dropdown); defaults to water flow.
 - **Flow speed 流动速度** — `Constant` or `Follow generation speed` (official Menu dropdown, theme-aware). Defaults to **follow**: the water breathes with the turn itself.
-- **Speed 速度倍速** — a segmented scale of official Pill chips (3× · 2.5× · 2× · 1.5× · 1× · 0.5×, edge to edge across the field), shown in constant mode only — in follow mode the pace belongs to the token stream. **1× is the official shimmer cadence**; 3× triples it (1.3s), 0.5× halves it (8s). Defaults to 1×.
+- **Speed multiplier 速度倍速** — a segmented scale of official Pill chips (3× · 2.5× · 2× · 1.5× · 1× · 0.5×, edge to edge across the field), shown in constant mode only — in follow mode the pace belongs to the token stream. **1× is the official shimmer cadence**; 3× triples it (1.3s), 0.5× halves it (8s). Defaults to 1×.
 - **Intensity 强度** — 30% / 50% / 80% / 100% pills, applied live to the highlight layers.
-- **Glowing aura 流动辉光** — the text-shadow halo switch, default ON.
-- **Status text 状态文字** — custom wording for the status line; empty keeps the official locale text ("Deep diving..." / "深度求索中..."). Input commits debounced (300ms); applied per turn via a `data-dv-text` attribute React never reclaims (see Design).
+- **Glow 辉光** — the text-shadow halo switch, default ON.
+- **Status text 状态文字** — custom wording for the status line, defaulting to **“Deep Diving”** (the plugin's own name); an explicitly empty input keeps the official locale text ("Deep diving..." / "深度求索中..."). Input commits debounced (300ms); applied per turn via a `data-dv-text` attribute React never reclaims (see Design).
 - **Per-effect knobs 效果微调** — the selected effect's own segmented scale (depth / span / halo / sway); unselected effects keep their saved values.
 - In follow mode a MutationObserver over the conversation flow maps the streamed character pace onto `--dv-dur`. Calibrated to measured throughputs: **~50 tok/s (the typical API turn — Zhipu GLM, DeepSeek) lands exactly on the official cadence at 1×**; faster providers climb a log curve to a rapids ceiling at ~250 tok/s (Cerebras-class serving); still water is 12s. 
 - **Flow under reduced motion** — the force-flow toggle, default ON; applies live (no reload).
