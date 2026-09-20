@@ -73,7 +73,7 @@ Pure CSS: zero JS per frame, zero layout. Measured via CDP `Performance.getMetri
 
 `prefers-reduced-motion: reduce` (Windows: Settings → Accessibility → Visual effects → Animation effects off; macOS: Reduce motion) would hold the currents still — the same guard the stock dsh shimmer has. Since most reduced-motion users still want this gentle effect, **force-flow is ON by default**: the flow animates regardless, and anyone who needs true stillness (e.g. vestibular sensitivity) flips it off once in
 
-**Settings → Plugins → Plugin configuration → Deep diving**
+**Plugins → dsh-ui-deepdiving** (or **Settings → Plugins → Deep diving** on dsh ≤ 0.1.5)
 
 | Light | Dark |
 |:---:|:---:|
@@ -116,7 +116,7 @@ Open [`docs/demo.html`](docs/demo.html) directly in a browser — a standalone c
 
 Zero-build: `lib/client.js` is hand-maintained source AND the shipped artifact, in the `window.__ModuleLoader__` handoff format (see the [outline plugin](https://github.com/iluluyu/dsh-ui-outline) for the same skeleton). `npm run check` syntax-checks; `npm publish` ships.
 
-Settings: the official plugin-settings path — host-side `deepdiving` namespace + keyed `settings.plugin.item` card + `settingsScope` revision-fenced reads/writes (shipped in 0.0.1; the plan and research live in [docs/MIGRATION-settings-card.md](docs/MIGRATION-settings-card.md)).
+Settings: the official plugin-settings path — host-side `deepdiving` namespace + `plugins.bundle.config` / `plugins.row.config` (dsh ≥ 0.1.6) and keyed `settings.plugin.item` card (dsh ≤ 0.1.5) + `settingsScope` revision-fenced reads/writes (plan and research live in [docs/MIGRATION-settings-card.md](docs/MIGRATION-settings-card.md) and [docs/slot-compatibility-migration.md](docs/slot-compatibility-migration.md)).
 
 ```sh
 git clone https://github.com/iluluyu/dsh-ui-deepdiving
