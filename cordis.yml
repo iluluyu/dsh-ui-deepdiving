@@ -1,6 +1,16 @@
-# dsh-ui-deepdiving — one loader row over the shipped Web composition:
-# the node half is a no-op; the browser half (dsh.client row) injects the
-# water-flow stylesheet over the turn-status text.
+# dsh-ui-deepdiving — one loader row. Row config is the composition base.
 - insert:
     - id: deepdiving
       name: 'dsh-ui-deepdiving'
+      config:
+        effect: flow
+        speedMode: follow
+        mult: 1
+        forceFlow: false
+        glow: false
+        intensity: 1
+        statusText: ''
+        depth: 0.35
+        span: 90
+        trail: 15
+        swing: 15
