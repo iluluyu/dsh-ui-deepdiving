@@ -12,6 +12,9 @@
 
 ```sh
 dsh plugin --profile web add dsh-ui-deepdiving
+dsh plugin --profile web add github:iluluyu/dsh-ui-deepdiving
+dsh plugin --profile web add .   # 插件目录下执行（相对路径相对当前执行位置）
+dsh plugin --profile web add file:/absolute/path/to/plugin
 ```
 
 重启 `dsh web` 并刷新。卸载：`dsh plugin --profile web remove dsh-ui-deepdiving`。
