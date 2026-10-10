@@ -1,6 +1,6 @@
 {
   "name": "dsh-ui-deepdiving",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "深度求索状态行的水流光影。",
   "type": "module",
   "main": "lib/index.js",
