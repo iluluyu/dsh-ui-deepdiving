@@ -1,2 +1,10 @@
 node_modules/
+ref/
+.pi/
 pnpm-lock.yaml
+.DS_Store
+*.tmp
+.tmp-*
+.artifact-server.json
+.artifact-server.log
+.sharing.json
